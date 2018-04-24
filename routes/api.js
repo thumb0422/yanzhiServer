@@ -34,16 +34,21 @@ router.get('/faceApi', async (ctx, next) => {
 })
 
 router.post('/postTest', async (ctx, next) => {
-    let body = await httpRequest.postApi('http://127.0.0.1:5000/order/F2001', ctx.request.body)
-    ctx.body = {
-        'methond': ctx.method,
-        'body': {
-            'status': body.status,
-            'message': body.message,
-            'count': body.count,
-            'data': body.datas,
-        },
-    }
+    await httpRequest.postApi('http://127.0.0.1:5000/order/F2001', ctx.request.body).then(result => {
+        ctx.body = {
+            'status': result.status,
+            'message': result.message,
+            'count': result.count,
+            'data': result.datas,
+        }
+    }).catch(err => {
+        ctx.body = {
+            'status': -1,
+            'message': '查询出错',
+            'count': 0,
+            'data': null,
+        }
+    })
 })
 
 
