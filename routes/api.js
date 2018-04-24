@@ -1,8 +1,8 @@
 const path = require('path')
 const router = require('koa-router')()
-const { uploadFile } = require('../utility/upload')
+const {uploadFile} = require('../utility/upload')
 
-var  httpRequest = require('../utility/httpRequest')
+var httpRequest = require('../utility/httpRequest')
 router.prefix('/api')
 
 router.get('/index', async (ctx, next) => {
@@ -14,12 +14,12 @@ router.get('/index', async (ctx, next) => {
 
 router.post('/upload', async (ctx, next) => {
     // 上传文件请求处理
-    let result = { success: false }
+    let result = {success: false}
     // TODO 需要使用绝对路径  https://github.com/imsobear/blog/issues/48
-    let serverFilePath = path.join( process.cwd(), 'public/upload/images' )
+    let serverFilePath = path.join(process.cwd(), 'public/upload/images')
 
     // 上传文件事件
-    result = await uploadFile( ctx, {
+    result = await uploadFile(ctx, {
         fileType: 'album',
         path: serverFilePath
     })
@@ -34,22 +34,16 @@ router.get('/faceApi', async (ctx, next) => {
 })
 
 router.post('/postTest', async (ctx, next) => {
-    httpRequest.getUrl(function (result) {
-        console.log('getUrl-----------------return,result = ',result)
-    })
-
-    httpRequest.getUrlParams('http://www.baidu.com',{'A1':'aaaa'},function (result) {
-        console.log('getUrlParams-----------------return,result = ',result)
-    })
-
-    httpRequest.postUrl(function (result) {
-        console.log('post-----------------return')
-        console.log(result)
-    })
+    let body = await httpRequest.postApi('http://127.0.0.1:5000/order/F2001', ctx.request.body)
     ctx.body = {
         'methond': ctx.method,
-        'body':ctx.request.body,
-    };
+        'body': {
+            'status': body.status,
+            'message': body.message,
+            'count': body.count,
+            'data': body.datas,
+        },
+    }
 })
 
 

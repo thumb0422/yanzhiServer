@@ -17,14 +17,10 @@ let httpRequest = {
         })
     },
 
-    postUrl :function (callback) {
-        requestData = {
-            "P1":"p1",
-            "P2":"p2",
-        }
+    postUrl :function (url,params,callback) {
+        requestData = params
         request({
-            // url: url,
-            url : 'http://www.baidu.com',
+            url : url,
             method: "POST",
             json: true,
             headers: {
@@ -35,10 +31,37 @@ let httpRequest = {
             if (!error && response.statusCode == 200) {
                 console.log('POST return ------')
                 console.log(body)
+                callback(response.body)
+            }else{
+                callback(response)
             }
         });
     }
 }
 
 
-module.exports = httpRequest
+let postApi = function (url,params) {
+    return new Promise(function(resolve, reject) {
+        requestData = params
+        request({
+            url : url,
+            method: "POST",
+            json: true,
+            headers: {
+                "content-type": "application/json",
+            },
+            body: JSON.stringify(requestData)
+        }, function(error, response, body) {
+            if (!error && response.statusCode == 200) {
+                resolve(response.body)
+            }else{
+                reject(response)
+            }
+        });
+    });
+}
+
+module.exports = {
+    httpRequest,
+    postApi
+}
