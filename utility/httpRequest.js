@@ -1,4 +1,5 @@
 const request = require('request');
+const querystring = require('querystring');
 
 let httpRequest = {
     getUrl: function (callback) {
@@ -58,19 +59,21 @@ let postApiJson = function (url, headParams, bodyParams) {
                     reject(response)
                 }
             }
-        )
-        ;
+        );
     });
 }
 
 let postApiForm = function (url, headParams, bodyParams) {
-    headParams['Content-Type'] = 'application/x-www-form-urlencoded'
+
     bodyParams = bodyParams
+    post_data = querystring.stringify(bodyParams);
+    headParams['Content-Type'] = 'application/x-www-form-urlencoded'
+    headParams['Content-Length'] = post_data.length
     return new Promise(function (resolve, reject) {
         request({
                 url: url,
                 method: "POST",
-                json: true,
+                json: false,
                 headers: headParams,
                 body: bodyParams,
             },
@@ -81,8 +84,7 @@ let postApiForm = function (url, headParams, bodyParams) {
                     reject(response)
                 }
             }
-        )
-        ;
+        );
     });
 }
 

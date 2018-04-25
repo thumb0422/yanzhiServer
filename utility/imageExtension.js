@@ -7,7 +7,7 @@ function imageEncodeBase64(imageName) {
     imageBuf = fs.readFileSync(imageDir)
 
     suffix = imageDir.split(".")[1];
-    prefix = "data:" + suffix + ";base64,";
+    prefix = "data:image/" + suffix + ";base64,";
     base64 = new Buffer(imageBuf, 'binary').toString('base64');
     imageBase64Result = prefix + base64
     console.log(imageBase64Result)
