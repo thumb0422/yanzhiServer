@@ -40,7 +40,7 @@ let httpRequest = {
 }
 
 
-let postApi = function (url, headParams, bodyParams) {
+let postApiJson = function (url, headParams, bodyParams) {
     headParams['content-type'] = 'application/json'
     bodyParams = bodyParams
     return new Promise(function (resolve, reject) {
@@ -51,7 +51,29 @@ let postApi = function (url, headParams, bodyParams) {
                 headers: headParams,
                 body: bodyParams,
             },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    resolve(response.body)
+                } else {
+                    reject(response)
+                }
+            }
+        )
+        ;
+    });
+}
 
+let postApiForm = function (url, headParams, bodyParams) {
+    headParams['Content-Type'] = 'application/x-www-form-urlencoded'
+    bodyParams = bodyParams
+    return new Promise(function (resolve, reject) {
+        request({
+                url: url,
+                method: "POST",
+                json: true,
+                headers: headParams,
+                body: bodyParams,
+            },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     resolve(response.body)
@@ -66,5 +88,6 @@ let postApi = function (url, headParams, bodyParams) {
 
 module.exports = {
     httpRequest,
-    postApi
+    postApiJson,
+    postApiForm,
 }
