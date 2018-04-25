@@ -1,7 +1,7 @@
 const request = require('request');
 
 let httpRequest = {
-    getUrl :function (callback) {
+    getUrl: function (callback) {
         request('http://www.baidu.com', function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 callback(body)
@@ -9,7 +9,7 @@ let httpRequest = {
         })
     },
 
-    getUrlParams :function (url,params,callback) {
+    getUrlParams: function (url, params, callback) {
         request(url, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 callback(body)
@@ -17,22 +17,22 @@ let httpRequest = {
         })
     },
 
-    postUrl :function (url,params,callback) {
+    postUrl: function (url, params, callback) {
         requestData = params
         request({
-            url : url,
+            url: url,
             method: "POST",
             json: true,
             headers: {
                 "content-type": "application/json",
             },
             body: JSON.stringify(requestData)
-        }, function(error, response, body) {
+        }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 console.log('POST return ------')
                 console.log(body)
                 callback(response.body)
-            }else{
+            } else {
                 callback(response)
             }
         });
@@ -40,24 +40,27 @@ let httpRequest = {
 }
 
 
-let postApi = function (url,params) {
-    return new Promise(function(resolve, reject) {
-        requestData = params
+let postApi = function (url, headParams, bodyParams) {
+    headParams['content-type'] = 'application/json'
+    bodyParams = bodyParams
+    return new Promise(function (resolve, reject) {
         request({
-            url : url,
-            method: "POST",
-            json: true,
-            headers: {
-                "content-type": "application/json",
+                url: url,
+                method: "POST",
+                json: true,
+                headers: headParams,
+                body: bodyParams,
             },
-            body: JSON.stringify(requestData)
-        }, function(error, response, body) {
-            if (!error && response.statusCode == 200) {
-                resolve(response.body)
-            }else{
-                reject(response)
+
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    resolve(response.body)
+                } else {
+                    reject(response)
+                }
             }
-        });
+        )
+        ;
     });
 }
 
