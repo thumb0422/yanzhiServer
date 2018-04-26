@@ -1,46 +1,6 @@
 const request = require('request');
 const querystring = require('querystring');
 
-let httpRequest = {
-    getUrl: function (callback) {
-        request('http://www.baidu.com', function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                callback(body)
-            }
-        })
-    },
-
-    getUrlParams: function (url, params, callback) {
-        request(url, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                callback(body)
-            }
-        })
-    },
-
-    postUrl: function (url, params, callback) {
-        requestData = params
-        request({
-            url: url,
-            method: "POST",
-            json: true,
-            headers: {
-                "content-type": "application/json",
-            },
-            body: JSON.stringify(requestData)
-        }, function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-                console.log('POST return ------')
-                console.log(body)
-                callback(response.body)
-            } else {
-                callback(response)
-            }
-        });
-    }
-}
-
-
 let postApiJson = function (url, headParams, bodyParams) {
     headParams['content-type'] = 'application/json'
     bodyParams = bodyParams
@@ -96,7 +56,6 @@ let postApiForm = function (url,formData) {
 }
 
 module.exports = {
-    httpRequest,
     postApiJson,
     postApiForm,
 }

@@ -1,9 +1,9 @@
 var fs = require("fs");
 var path = require('path');
 
-
 function imageEncodeBase64(imageName) {
-    imageDir = __dirname + '/' + imageName
+    let rootDir = process.cwd()
+    imageDir = rootDir + '/public' + imageName
     imageBuf = fs.readFileSync(imageDir)
 
     suffix = imageDir.split(".")[1];
@@ -30,5 +30,5 @@ function decodeBase64Image(data) {
 
 module.exports = {
     imageEncodeBase64,
-    decodeBase64Image
+    decodeBase64Image,
 }

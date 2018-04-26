@@ -32,7 +32,16 @@ router.post('/upload', async (ctx, next) => {
         fileType: 'album',
         path: serverFilePath
     })
-    ctx.body = result
+    //再去服务器解析颜值
+    //解耦
+    await faceImageRequest.sendImageRequest(result.data.pictureUrl).then(result => {
+        ctx.body = result
+    }).catch(err => {
+        ctx.body = {
+            'status': -1,
+            'message': '颜值分析失败'
+        }
+    })
 })
 
 router.post('/postTest', async (ctx, next) => {
