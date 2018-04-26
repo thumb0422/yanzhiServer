@@ -59,7 +59,7 @@ function requestEvent( options ) {
       let per = Math.floor(100 * loaded / tot) 
       options.progress(per)
     }
-    xhr.open('post', '/api/upload')
+    xhr.open('post', '/aliyun/api/upload')
     xhr.send(formData)
   } catch ( err ) {
     options.fail(err)
