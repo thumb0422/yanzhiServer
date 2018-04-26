@@ -37,10 +37,7 @@ router.post('/upload', async (ctx, next) => {
     await faceImageRequest.sendImageRequest(result.data.pictureUrl).then(result => {
         ctx.body = result
     }).catch(err => {
-        ctx.body = {
-            'status': -1,
-            'message': '颜值分析失败'
-        }
+        ctx.body = err
     })
 })
 
