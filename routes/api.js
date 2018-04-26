@@ -2,8 +2,9 @@ const path = require('path')
 const router = require('koa-router')()
 const {uploadFile} = require('../utility/upload')
 const imageExtension = require('../utility/imageExtension')
+const httpRequest = require('../utility/httpRequest')
+const faceImageRequest = require('../utility/faceImageRequest')
 
-var httpRequest = require('../utility/httpRequest')
 router.prefix('/aliyun/api')
 
 router.get('/test', async (ctx, next) => {
@@ -60,12 +61,23 @@ router.post('/postTest', async (ctx, next) => {
 })
 
 router.post('/faceapi', async (ctx, next) => {
-    apihost = 'http://aiopen.datapeak.com.cn'
-    apipath = '/proxy/api/face_score_plus'
-    apiUrl = apihost + apipath
-    let bodyData = {}
-    bodyData['img_base64'] = imageExtension.imageEncodeBase64('1.png')
-    await httpRequest.postApiForm(apiUrl, bodyData).then(result => {
+    // apihost = 'http://aiopen.datapeak.com.cn'
+    // apipath = '/proxy/api/face_score_plus'
+    // apiUrl = apihost + apipath
+    // let bodyData = {}
+    // bodyData['img_base64'] = imageExtension.imageEncodeBase64('1.png')
+    // await httpRequest.postApiForm(apiUrl, bodyData).then(result => {
+    //     ctx.body = result
+    // }).catch(err => {
+    //     ctx.body = {
+    //         'status': -1,
+    //         'message': '查询出错',
+    //         'err': err,
+    //     }
+    // })
+
+    //解耦
+    await faceImageRequest.sendImageRequest().then(result => {
         ctx.body = result
     }).catch(err => {
         ctx.body = {
