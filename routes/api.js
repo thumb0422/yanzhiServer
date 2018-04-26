@@ -60,26 +60,18 @@ router.post('/postTest', async (ctx, next) => {
 })
 
 router.post('/faceapi', async (ctx, next) => {
-    params = ctx.request.body
     apihost = 'http://aiopen.datapeak.com.cn'
     apipath = '/proxy/api/face_score_plus'
     apiUrl = apihost + apipath
-    let headDic = {'appKey': '7cabc45a12da376c1aa482f65db61b661524635936121'}
-    let bodyDic = ctx.request.body
-    bodyDic['img_base64'] = imageExtension.imageEncodeBase64('1.png')
-    await httpRequest.postApiForm(apiUrl, headDic, bodyDic).then(result => {
-        ctx.body = {
-            'status': result.status,
-            'message': result.message,
-            'count': result.count,
-            'data': result.datas,
-        }
+    let bodyData = {}
+    bodyData['img_base64'] = imageExtension.imageEncodeBase64('1.png')
+    await httpRequest.postApiForm(apiUrl, bodyData).then(result => {
+        ctx.body = result
     }).catch(err => {
         ctx.body = {
             'status': -1,
             'message': '查询出错',
-            'count': 0,
-            'data': null,
+            'err': err,
         }
     })
 })
